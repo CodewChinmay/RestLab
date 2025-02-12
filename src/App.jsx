@@ -23,15 +23,15 @@ function App() {
       }
       const res = await fetch(url, options);
       const data = await res.json();
-      setResponse(data);
+      setResponse({ status: res.status, data }); // Include status in the response
     } catch (error) {
-      setResponse({ error: "Failed to fetch data." });
+      setResponse({ status: "error", data: { error: "Failed to fetch data." } });
     }
     setLoading(false);
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen flex flex-col space-y-4">
+    <div className="p-6 bg-gray-900 min-h-screen flex flex-col space-y-4">
       <Header />
       <Input 
         url={url} 
@@ -43,10 +43,30 @@ function App() {
         sendRequest={sendRequest} 
         loading={loading}
       />
-      <div className="border p-2 rounded bg-gray-50 min-h-[100px]">
-        <h2 className="text-lg font-semibold">Response:</h2>
-        <pre className="text-sm whitespace-pre-wrap">
-          {response ? JSON.stringify(response, null, 2) : "No response yet"}
+      <div className="border-2 border-gray-200 rounded-xl bg-gray-50 p-4 shadow-sm min-h-[150px] relative">
+        {/* Status Badge */}
+        {response?.status && (
+          <div
+            className={`absolute top-4 right-4 text-sm font-medium px-3 py-1 rounded-full ${
+              response.status === 200
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
+          >
+            {response.status === 200 ? "OK" : "Error"}
+          </div>
+        )}
+
+        {/* Response Header */}
+        <h2 className="text-lg font-semibold text-gray-700 mb-3">Response</h2>
+
+        {/* Response Body */}
+        <pre className="text-sm font-mono text-gray-600 whitespace-pre-wrap break-words">
+          {response ? (
+            typeof response.data === "object" ? JSON.stringify(response.data, null, 2) : response.data
+          ) : (
+            <span className="text-gray-400">No response yet</span>
+          )}
         </pre>
       </div>
     </div>
