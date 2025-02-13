@@ -1,0 +1,14 @@
+/* @keyframes slideInFromTop {
+    0% {
+      transform: translate(-50%, -20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+  }
+  
+  .animate-slideInFromTop {
+    animation: slideInFromTop 0.3s ease-out;
+  } */
