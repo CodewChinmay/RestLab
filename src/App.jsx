@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./pages/header.jsx";
 import Input from "./pages/input.jsx";
 import { Plus, X } from "lucide-react";
@@ -17,8 +17,27 @@ const createEmptyForm = () => ({
 });
 
 function App() {
-  const [forms, setForms] = useState([createEmptyForm()]);
-  const [activeIndex, setActiveIndex] = useState(0);
+  // Initialize forms from localStorage, if available.
+  const [forms, setForms] = useState(() => {
+    const savedForms = localStorage.getItem("forms");
+    return savedForms ? JSON.parse(savedForms) : [createEmptyForm()];
+  });
+
+  // Initialize activeIndex from localStorage, or default to 0.
+  const [activeIndex, setActiveIndex] = useState(() => {
+    const savedIndex = localStorage.getItem("activeIndex");
+    return savedIndex ? JSON.parse(savedIndex) : 0;
+  });
+
+  // Persist forms state in localStorage whenever it changes.
+  useEffect(() => {
+    localStorage.setItem("forms", JSON.stringify(forms));
+  }, [forms]);
+
+  // Persist activeIndex in localStorage whenever it changes.
+  useEffect(() => {
+    localStorage.setItem("activeIndex", JSON.stringify(activeIndex));
+  }, [activeIndex]);
 
   // Add a new empty form page and set it as active.
   const addForm = () => {
