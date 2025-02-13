@@ -64,7 +64,7 @@ function Header({ onSelectSavedOption }) {
           onClick={() => setSidebarOpen(true)}
         />
         <h1 className="text-2xl font-bold text-white">
-          🚀 RESTIFY ~ Test your APIs
+          🚀 RESTLAB ~ Test your APIs
         </h1>
       </div>
 
@@ -77,7 +77,7 @@ function Header({ onSelectSavedOption }) {
       >
         <div className="flex justify-between items-center mb-4 p-4">
           <h1 className="text-2xl font-bold text-white">
-            🚀 RESTIFY ~ Test your APIs
+            🚀 RESTLAB ~ Test your APIs
           </h1>
           <X
             className="cursor-pointer hover:text-gray-300 transition-colors"
