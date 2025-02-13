@@ -63,7 +63,7 @@ function Header({ onSelectSavedOption }) {
           className="text-white cursor-pointer hover:text-blue-900 hover:bg-gray-200 h-12 w-12 p-2 rounded transition-colors ease-in transition-2s"
           onClick={() => setSidebarOpen(true)}
         />
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-white w-full text-center">
           🚀 RESTLAB ~ Test your APIs
         </h1>
       </div>
