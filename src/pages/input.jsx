@@ -8,11 +8,11 @@ import {
   CheckCircle2,
   XCircle,
   X,
-    Save,
+  Save,
 } from "lucide-react";
 import MethodDropdown from "./methoddropdown.jsx";
 
-import "../App.css"
+import "../App.css";
 
 const methodColors = {
   GET: "border-l-4 border-blue-500 bg-blue-50 text-blue-700",
@@ -21,8 +21,6 @@ const methodColors = {
   PATCH: "border-l-4 border-purple-500 bg-purple-50 text-purple-700",
   DELETE: "border-l-4 border-red-500 bg-red-50 text-red-700",
 };
-
-
 
 function Input({
   url,
@@ -39,6 +37,8 @@ function Input({
   setFormData,
   fileData,
   setFileData,
+  authToken,
+  setAuthToken,
 }) {
   const [isBodyValid, setIsBodyValid] = useState(true);
   const [isAlreadySaved, setIsAlreadySaved] = useState(false);
@@ -46,6 +46,8 @@ function Input({
   const [availableGroups, setAvailableGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("");
   const [newGroupName, setNewGroupName] = useState("");
+  // New state to decide if user wants to include the bearer token
+  const [includeBearer, setIncludeBearer] = useState(false);
 
   // Custom Alert (Toast) state & helper.
   const [customAlert, setCustomAlert] = useState(null);
@@ -58,7 +60,7 @@ function Input({
 
   // Validate raw JSON body.
   useEffect(() => {
-    if (method === "GET" || mode === "form") return;
+    if (method === "GET" || mode === "form" || mode === "urlencoded") return;
     try {
       JSON.parse(body);
       setIsBodyValid(true);
@@ -127,6 +129,8 @@ function Input({
   };
 
   const isFormValid = formData.every((field) => {
+    // In URL Encoded mode, file inputs are not supported.
+    if (mode === "urlencoded" && field.type === "file") return false;
     if (field.type === "file") {
       return fileData[field.id] !== undefined;
     }
@@ -183,8 +187,8 @@ function Input({
 
   return (
     <div className="relative">
-       {/* Custom Toast Alert - Updated to top-center */}
-       {customAlert && (
+      {/* Custom Toast Alert - Updated to top-center */}
+      {customAlert && (
         <div
           style={{ animation: "slideDown 0.3s ease-out" }}
           className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 ${
@@ -226,12 +230,12 @@ function Input({
             disabled={
               loading ||
               (!isBodyValid && mode === "raw") ||
-              (mode === "form" && !isFormValid)
+              ((mode === "form" || mode === "urlencoded") && !isFormValid)
             }
-            className={`px-6 py-3 rounded-xl flex items-center gap-2 transition-all ${
+            className={`px-5 py-5 rounded-full flex items-center gap-2 transition-all ${
               loading ||
               (!isBodyValid && mode === "raw") ||
-              (mode === "form" && !isFormValid)
+              ((mode === "form" || mode === "urlencoded") && !isFormValid)
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                 : "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500 text-white shadow-md hover:shadow-lg"
             }`}
@@ -240,8 +244,8 @@ function Input({
               <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
               <>
-                <Send className="w-5 h-5" />
-                <span className="font-semibold">Send</span>
+                <Send className="w-6 h-6" />
+                {/* <span className="font-semibold">Send</span> */}
               </>
             )}
           </button>
@@ -249,18 +253,47 @@ function Input({
           <button
             onClick={openSaveModal}
             disabled={loading || isAlreadySaved}
-            className={`px-6 py-3 rounded-xl flex items-center gap-2 transition-all ${
+            className={`px-5 py-5 rounded-full flex items-center gap-2 transition-all ${
               loading || isAlreadySaved
                 ? "bg-gray-400 text-white cursor-not-allowed"
                 : "bg-gradient-to-r from-green-500 to-teal-600 hover:from-teal-600 hover:to-green-500 text-white shadow-md hover:shadow-lg"
             }`}
           >
-            <Save className="w-5 h-5" />
-            <span className="font-semibold">
+            <Save className="w-6 h-6" />
+            {/* <span className="font-semibold">
               {isAlreadySaved ? "Saved" : "Save"}
-            </span>
+            </span> */}
           </button>
         </div>
+
+        {/* New Markup for Bearer Token */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="includeBearer"
+              checked={includeBearer}
+              onChange={(e) => {
+                setIncludeBearer(e.target.checked);
+                if (!e.target.checked) setAuthToken("");
+              }}
+              className="h-4 w-4"
+            />
+            <label htmlFor="includeBearer" className="text-sm text-gray-600">
+              Include Bearer Token
+            </label>
+          </div>
+          {includeBearer && (
+            <input
+              type="text"
+              placeholder="Enter your token here"
+              value={authToken}
+              onChange={(e) => setAuthToken(e.target.value)}
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 font-medium transition-all"
+            />
+          )}
+        </div>
+
         {(method === "POST" ||
           method === "PATCH" ||
           method === "PUT") && (
@@ -286,6 +319,16 @@ function Input({
               >
                 Form Data
               </button>
+              <button
+                className={`px-6 py-2 rounded-md transition-all ${
+                  mode === "urlencoded"
+                    ? "bg-blue-600 shadow-sm text-white"
+                    : "text-gray-500 hover:bg-gray-50"
+                }`}
+                onClick={() => setMode("urlencoded")}
+              >
+                URL Encoded
+              </button>
             </div>
             {mode === "raw" ? (
               <div className="relative">
@@ -307,7 +350,7 @@ function Input({
                   )}
                 </div>
               </div>
-            ) : (
+            ) : mode === "form" ? (
               <div className="flex flex-col gap-3">
                 {formData.map((field) => (
                   <div
@@ -378,79 +421,131 @@ function Input({
                   <span className="font-medium">Add Row</span>
                 </button>
               </div>
-            )}
+            ) : mode === "urlencoded" ? (
+              <div className="flex flex-col gap-3">
+                {formData.map((field) => (
+                  <div
+                    key={field.id}
+                    className="grid grid-cols-12 gap-3 items-center"
+                  >
+                    {/* Key Input */}
+                    <div className="col-span-5">
+                      <input
+                        type="text"
+                        placeholder="Key"
+                        value={field.name}
+                        onChange={(e) =>
+                          handleFormChange(field.id, "name", e.target.value)
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    {/* Value Input */}
+                    <div className="col-span-5">
+                      <input
+                        type="text"
+                        placeholder="Value"
+                        value={field.value}
+                        onChange={(e) =>
+                          handleFormChange(field.id, "value", e.target.value)
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    {/* Remove Button */}
+                    <div className="col-span-2 flex justify-center">
+                      <button
+                        onClick={() => removeFormField(field.id)}
+                        className="text-red-500"
+                      >
+                        <Trash />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  onClick={addFormField}
+                  className="flex items-center gap-2 text-blue-600 hover:text-blue-700 w-fit px-4 py-2 hover:bg-blue-50 rounded-lg transition-colors"
+                >
+                  <Plus className="w-5 h-5" />
+                  <span className="font-medium">Add Row</span>
+                </button>
+              </div>
+            ) : null}
           </div>
         )}
 
-              {/* Save Modal - Updated to top-center */}
-      {showSaveModal && (
-        <div className="fixed inset-0 z-50 backdrop-blur-sm">
-          <div className="fixed top-20  left-1/2 transform -translate-x-1/2 w-96 bg-white rounded-xl shadow-2xl border border-gray-100 animate-slideInFromTop">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">Save Request</h2>
-                <button
-                  onClick={() => setShowSaveModal(false)}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Group
-                  </label>
-                  <select
-                    value={selectedGroup}
-                    onChange={(e) => setSelectedGroup(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Choose existing group</option>
-                    {availableGroups.map((group) => (
-                      <option key={group} value={group}>
-                        {group}
-                      </option>
-                    ))}
-                    <option value="new">Create New Group</option>
-                  </select>
-                </div>
-
-                {selectedGroup === "new" && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      New Group Name
-                    </label>
-                    <input
-                      type="text"
-                      value={newGroupName}
-                      onChange={(e) => setNewGroupName(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Enter group name"
-                    />
-                  </div>
-                )}
-
-                <div className="flex justify-end space-x-3">
+        {/* Save Modal - Updated to top-center */}
+        {showSaveModal && (
+          <div className="fixed inset-0 z-50 backdrop-blur-sm">
+            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-96 bg-white rounded-xl shadow-2xl border border-gray-100 animate-slideInFromTop">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Save Request
+                  </h2>
                   <button
                     onClick={() => setShowSaveModal(false)}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    Cancel
+                    <X className="w-5 h-5" />
                   </button>
-                  <button
-                    onClick={handleConfirmSave}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Save
-                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Select Group
+                    </label>
+                    <select
+                      value={selectedGroup}
+                      onChange={(e) => setSelectedGroup(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Choose existing group</option>
+                      {availableGroups.map((group) => (
+                        <option key={group} value={group}>
+                          {group}
+                        </option>
+                      ))}
+                      <option value="new">Create New Group</option>
+                    </select>
+                  </div>
+
+                  {selectedGroup === "new" && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        New Group Name
+                      </label>
+                      <input
+                        type="text"
+                        value={newGroupName}
+                        onChange={(e) => setNewGroupName(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter group name"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex justify-end space-x-3">
+                    <button
+                      onClick={() => setShowSaveModal(false)}
+                      className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleConfirmSave}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Save
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

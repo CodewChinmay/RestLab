@@ -12,7 +12,10 @@ const createEmptyForm = () => ({
   response: null,
   loading: false,
   mode: "raw",
-  formData: [{ id: Date.now() + Math.random(), name: "", value: "", type: "text" }],
+  authToken: "", // <-- Added for Bearer token
+  formData: [
+    { id: Date.now() + Math.random(), name: "", value: "", type: "text" }
+  ],
   fileData: {}
 });
 
@@ -83,6 +86,12 @@ function App() {
     updateForm(index, "loading", true);
     try {
       let options = { method: form.method, headers: {} };
+
+      // If the authToken is provided, attach it to the headers.
+      if (form.authToken && form.authToken.trim()) {
+        options.headers["Authorization"] = `Bearer ${form.authToken.trim()}`;
+      }
+
       if (form.method !== "GET") {
         if (form.mode === "raw") {
           try {
@@ -93,6 +102,7 @@ function App() {
             throw new Error("Invalid JSON body");
           }
         } else if (form.mode === "form") {
+          // For form-data (multipart)
           const formDataObj = new FormData();
           form.formData.forEach((field) => {
             if (field.type === "file" && form.fileData[field.id]) {
@@ -102,11 +112,25 @@ function App() {
             }
           });
           options.body = formDataObj;
+        } else if (form.mode === "urlencoded") {
+          // Convert formData to URLSearchParams.
+          const params = new URLSearchParams();
+          form.formData.forEach((field) => {
+            if (field.name.trim()) {
+              params.append(field.name, field.value);
+            }
+          });
+          options.headers["Content-Type"] = "application/x-www-form-urlencoded";
+          options.body = params.toString();
         }
       }
       const res = await fetch(form.url, options);
       if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
+        if (res.status === 401) {
+          throw new Error("Unauthorized");
+        } else {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
       }
       const contentType = res.headers.get("content-type");
       let data;
@@ -136,7 +160,10 @@ function App() {
       response: null,
       loading: false,
       mode: savedData.mode || "raw",
-      formData: savedData.formData || [{ id: Date.now() + Math.random(), name: "", value: "", type: "text" }],
+      authToken: savedData.authToken || "",
+      formData: savedData.formData || [
+        { id: Date.now() + Math.random(), name: "", value: "", type: "text" }
+      ],
       fileData: {}
     };
     setForms((prevForms) => {
@@ -150,7 +177,7 @@ function App() {
     <div className="p-6 bg-gray-900 min-h-screen flex flex-col">
       {/* Pass the saved option selection callback to Header */}
       <Header onSelectSavedOption={handleSelectSavedOption} />
-      
+
       {/* Tab Navigation */}
       <div className="flex items-center space-x-2 mt-9 mb-3 pb-2">
         {forms.map((form, idx) => (
@@ -190,7 +217,7 @@ function App() {
           <span>Add Page</span>
         </button>
       </div>
-      
+
       {/* Active Form Content */}
       {forms[activeIndex] && (
         <div className="flex flex-col space-y-4">
@@ -210,6 +237,8 @@ function App() {
               setFormData={(value) => updateForm(activeIndex, "formData", value)}
               fileData={forms[activeIndex].fileData}
               setFileData={(value) => updateForm(activeIndex, "fileData", value)}
+              authToken={forms[activeIndex].authToken} // <-- Pass token value
+              setAuthToken={(value) => updateForm(activeIndex, "authToken", value)} // <-- Setter
             />
           </div>
           <div className="border-2 border-gray-200 rounded-xl bg-gray-50 p-4 shadow-sm min-h-[150px] relative">
@@ -224,12 +253,16 @@ function App() {
                 {forms[activeIndex].response.status === 200 ? "OK" : "Error"}
               </div>
             )}
-            <h2 className="text-lg font-semibold text-gray-700 mb-3">Response</h2>
+            <h2 className="text-lg font-semibold text-gray-700 mb-3">
+              Response
+            </h2>
             <pre className="text-sm font-mono text-gray-600 whitespace-pre-wrap break-words">
               {forms[activeIndex].response ? (
-                typeof forms[activeIndex].response.data === "object"
-                  ? JSON.stringify(forms[activeIndex].response.data, null, 2)
-                  : forms[activeIndex].response.data
+                typeof forms[activeIndex].response.data === "object" ? (
+                  JSON.stringify(forms[activeIndex].response.data, null, 2)
+                ) : (
+                  forms[activeIndex].response.data
+                )
               ) : (
                 <span className="text-gray-400">No response yet</span>
               )}
