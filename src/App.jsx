@@ -14,9 +14,9 @@ const createEmptyForm = () => ({
   mode: "raw",
   authToken: "", // <-- Added for Bearer token
   formData: [
-    { id: Date.now() + Math.random(), name: "", value: "", type: "text" }
+    { id: Date.now() + Math.random(), name: "", value: "", type: "text" },
   ],
-  fileData: {}
+  fileData: {},
 });
 
 function App() {
@@ -79,7 +79,7 @@ function App() {
     if (!form.url.trim()) {
       updateForm(index, "response", {
         status: "error",
-        data: { error: "URL is required." }
+        data: { error: "URL is required." },
       });
       return;
     }
@@ -143,7 +143,7 @@ function App() {
     } catch (error) {
       updateForm(index, "response", {
         status: "error",
-        data: { error: error.message || "Failed to fetch data." }
+        data: { error: error.message || "Failed to fetch data." },
       });
     }
     updateForm(index, "loading", false);
@@ -162,9 +162,9 @@ function App() {
       mode: savedData.mode || "raw",
       authToken: savedData.authToken || "",
       formData: savedData.formData || [
-        { id: Date.now() + Math.random(), name: "", value: "", type: "text" }
+        { id: Date.now() + Math.random(), name: "", value: "", type: "text" },
       ],
-      fileData: {}
+      fileData: {},
     };
     setForms((prevForms) => {
       const newForms = [...prevForms, newForm];
@@ -174,36 +174,50 @@ function App() {
   };
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen flex flex-col">
+    <div className=" min-h-screen flex flex-col">
       {/* Pass the saved option selection callback to Header */}
       <Header onSelectSavedOption={handleSelectSavedOption} />
 
       {/* Tab Navigation */}
-      <div className="flex items-center space-x-2 mt-9 mb-3 pb-2">
+      <div className="flex items-center  ">
         {forms.map((form, idx) => (
           <div
             key={form.id}
             onClick={() => setActiveIndex(idx)}
-            className={`flex items-center px-3 py-1 rounded-md cursor-pointer ${
-              idx === activeIndex ? "bg-white text-black" : "bg-gray-600 text-white"
+            className={`flex items-center px-3 py-1 pt-3 pb-3 cursor-pointer ${
+              idx === activeIndex
+                ? "bg-white text-black  border-b-3 border-blue-300"
+                : "bg-gray-100 text-gray-700 "
             }`}
           >
-            <span>
-              {form.url
-                ? `${form.method} ${(() => {
-                    try {
-                      return new URL(form.url).hostname;
-                    } catch (error) {
-                      return form.url;
-                    }
-                  })()}`
-                : "New Request"}
+            <span className="flex  items-center gap-2">
+              {form.url ? (
+                <>
+                  <span>{form.method}</span>
+                  <div className="bg-gray-400 h-6 w-0.5 rounded"></div>
+                  <span>
+                    {(() => {
+                      try {
+                        return new URL(form.url).hostname;
+                      } catch (error) {
+                        return form.url;
+                      }
+                    })()}
+                  </span>
+                </>
+              ) : (
+                "New Request"
+              )}
             </span>
+
+            
+
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 removeForm(idx);
               }}
+              className="pointer-cursor"
             >
               <X className="w-4 h-4 ml-2" />
             </button>
@@ -211,16 +225,16 @@ function App() {
         ))}
         <button
           onClick={addForm}
-          className="flex items-center px-3 py-1 bg-green-500 text-white rounded"
+          className="flex items-center justify-center h-10 w-10 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded"
         >
-          <Plus className="w-4 h-4 mr-1" />
-          <span>Add Page</span>
+          <Plus className="w-4 h-4 " />
+          {/* <span>Add Page</span> */}
         </button>
       </div>
 
       {/* Active Form Content */}
       {forms[activeIndex] && (
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-4  ">
           <div className="">
             <Input
               url={forms[activeIndex].url}
@@ -234,14 +248,20 @@ function App() {
               mode={forms[activeIndex].mode}
               setMode={(value) => updateForm(activeIndex, "mode", value)}
               formData={forms[activeIndex].formData}
-              setFormData={(value) => updateForm(activeIndex, "formData", value)}
+              setFormData={(value) =>
+                updateForm(activeIndex, "formData", value)
+              }
               fileData={forms[activeIndex].fileData}
-              setFileData={(value) => updateForm(activeIndex, "fileData", value)}
+              setFileData={(value) =>
+                updateForm(activeIndex, "fileData", value)
+              }
               authToken={forms[activeIndex].authToken} // <-- Pass token value
-              setAuthToken={(value) => updateForm(activeIndex, "authToken", value)} // <-- Setter
+              setAuthToken={(value) =>
+                updateForm(activeIndex, "authToken", value)
+              } // <-- Setter
             />
           </div>
-          <div className="border-2 border-gray-200 rounded-xl bg-gray-50 p-4 shadow-sm min-h-[150px] relative">
+          <div className="border-2 border-gray-200  bg-gray-50 p-4 shadow-sm min-h-[150px] relative">
             {forms[activeIndex].response?.status && (
               <div
                 className={`absolute top-4 right-4 text-sm font-medium px-3 py-1 rounded-full ${

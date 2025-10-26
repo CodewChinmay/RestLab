@@ -232,7 +232,7 @@ function Input({
               (!isBodyValid && mode === "raw") ||
               ((mode === "form" || mode === "urlencoded") && !isFormValid)
             }
-            className={`px-5 py-5 rounded-full flex items-center gap-2 transition-all ${
+            className={`px-4 py-4 rounded-full flex items-center gap-2 transition-all ${
               loading ||
               (!isBodyValid && mode === "raw") ||
               ((mode === "form" || mode === "urlencoded") && !isFormValid)
@@ -244,7 +244,7 @@ function Input({
               <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
               <>
-                <Send className="w-6 h-6" />
+                <Send className="w-4 h-4" />
                 {/* <span className="font-semibold">Send</span> */}
               </>
             )}
@@ -253,13 +253,13 @@ function Input({
           <button
             onClick={openSaveModal}
             disabled={loading || isAlreadySaved}
-            className={`px-5 py-5 rounded-full flex items-center gap-2 transition-all ${
+            className={`px-4 py-4 rounded-full flex items-center gap-2 transition-all ${
               loading || isAlreadySaved
                 ? "bg-gray-400 text-white cursor-not-allowed"
                 : "bg-gradient-to-r from-green-500 to-teal-600 hover:from-teal-600 hover:to-green-500 text-white shadow-md hover:shadow-lg"
             }`}
           >
-            <Save className="w-6 h-6" />
+            <Save className="w-4 h-4" />
             {/* <span className="font-semibold">
               {isAlreadySaved ? "Saved" : "Save"}
             </span> */}

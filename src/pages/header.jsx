@@ -68,19 +68,22 @@ function Header({ onSelectSavedOption }) {
   return (
     <>
       {/* Header Bar */}
-      <header className="sticky top-0 z-40  shadow-md">
-        <div className="container  flex items-center">
+      <header className="sticky  top-0 z-40 ">
+        <div className="container  p-2 flex items-center">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+            className="p-2 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
             aria-label="Open menu"
           >
-            <Grip className="w-8 h-8 text-white" />
+            <Grip className="w-8 h-8 text-gray-400" />
           </button>
           
-          <h1 className="ml-4 text-xl font-bold text-white font-sans tracking-tight">
-            🚀 RESTLAB ~ API Testing Suite
+          <h1 className="ml-4 text-xl font-bold text-gray-600 font-sans tracking-tight">
+            🚀 RESTLAB ~ Test your APIs
           </h1>
+        </div>
+        <div className="absolute h-0.5 w-full bg-blue-300">
+
         </div>
       </header>
 
