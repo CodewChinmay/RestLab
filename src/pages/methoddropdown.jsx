@@ -7,7 +7,7 @@ export default function MethodDropdown({ method, setMethod, methodColors }) {
   return (
     <div className="flex flex-col gap-1">
       <div
-        className={`flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${methodColors[method]} w-36`}
+        className={`flex items-center justify-between px-4 py-2  cursor-pointer transition-all duration-200 ${methodColors[method]} w-36`}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle method dropdown"
         aria-expanded={isOpen}

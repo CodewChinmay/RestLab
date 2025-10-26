@@ -148,7 +148,6 @@ function App() {
     }
     updateForm(index, "loading", false);
   };
-
   // When a saved API is selected from the sidebar,
   // create a new form page with the saved data.
   const handleSelectSavedOption = (savedData) => {
@@ -172,29 +171,27 @@ function App() {
       return newForms;
     });
   };
-
   return (
     <div className=" min-h-screen flex flex-col">
       {/* Pass the saved option selection callback to Header */}
       <Header onSelectSavedOption={handleSelectSavedOption} />
-
       {/* Tab Navigation */}
-      <div className="flex items-center  ">
+      <div className="flex items-center dark:bg-gray-600">
         {forms.map((form, idx) => (
           <div
             key={form.id}
             onClick={() => setActiveIndex(idx)}
-            className={`flex items-center px-3 py-1 pt-3 pb-3 cursor-pointer ${
+            className={`flex items-center px-3 py-1 pt-3 pb-3 border-r-3 border-gray-300 cursor-pointer ${
               idx === activeIndex
-                ? "bg-white text-black  border-b-3 border-blue-300"
-                : "bg-gray-100 text-gray-700 "
+                ? "bg-gray-200 dark:bg-gray-800 dark:text-white text-gray-900  "
+                : "bg-gray-100 text-gray-700 dark:bg-gray-600 dark:text-white"
             }`}
           >
             <span className="flex  items-center gap-2">
               {form.url ? (
                 <>
                   <span>{form.method}</span>
-                  <div className="bg-gray-400 h-6 w-0.5 rounded"></div>
+                  <div className="bg-gray-400  h-6 w-0.5 rounded"></div>
                   <span>
                     {(() => {
                       try {
@@ -209,9 +206,6 @@ function App() {
                 "New Request"
               )}
             </span>
-
-            
-
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -225,16 +219,15 @@ function App() {
         ))}
         <button
           onClick={addForm}
-          className="flex items-center justify-center h-10 w-10 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded"
+          className="flex items-center justify-center h-12 w-11 bg-gray-100 border-r-3 border-gray-300 hover:bg-gray-20 text-gray-900  dark:bg-gray-600 dark:text-white"
         >
           <Plus className="w-4 h-4 " />
           {/* <span>Add Page</span> */}
         </button>
       </div>
-
       {/* Active Form Content */}
       {forms[activeIndex] && (
-        <div className="flex flex-col space-y-4  ">
+        <div className="flex flex-col  ">
           <div className="">
             <Input
               url={forms[activeIndex].url}
@@ -261,7 +254,7 @@ function App() {
               } // <-- Setter
             />
           </div>
-          <div className="border-2 border-gray-200  bg-gray-50 p-4 shadow-sm min-h-[150px] relative">
+          <div className="border-b-3 border-gray-300  bg-gray-50 p-4 min-h-[350px] relative">
             {forms[activeIndex].response?.status && (
               <div
                 className={`absolute top-4 right-4 text-sm font-medium px-3 py-1 rounded-full ${
@@ -293,5 +286,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

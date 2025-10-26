@@ -15,11 +15,11 @@ import MethodDropdown from "./methoddropdown.jsx";
 import "../App.css";
 
 const methodColors = {
-  GET: "border-l-4 border-blue-500 bg-blue-50 text-blue-700",
-  POST: "border-l-4 border-green-500 bg-green-50 text-green-700",
-  PUT: "border-l-4 border-yellow-500 bg-yellow-50 text-yellow-700",
-  PATCH: "border-l-4 border-purple-500 bg-purple-50 text-purple-700",
-  DELETE: "border-l-4 border-red-500 bg-red-50 text-red-700",
+  GET: "border-3 border-blue-500 bg-blue-50 text-blue-700",
+  POST: "border-3 border-green-500 bg-green-50 text-green-700",
+  PUT: "border-3 border-yellow-500 bg-yellow-50 text-yellow-700",
+  PATCH: "border-3 border-purple-500 bg-purple-50 text-purple-700",
+  DELETE: "border-3 border-red-500 bg-red-50 text-red-700",
 };
 
 function Input({
@@ -206,7 +206,7 @@ function Input({
         </div>
       )}
 
-      <div className="flex flex-col gap-6 bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+      <div className="flex flex-col gap-6 bg-white  dark:bg-gray-600 dark:text-white p-6 border-b-3 border-t-3 border-gray-300 dark:border-gray-300">
         <div className="flex gap-3 items-start relative">
           <MethodDropdown
             method={method}
@@ -222,7 +222,7 @@ function Input({
               placeholder="Enter request URL"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 font-medium transition-all"
+              className="w-full pl-12 pr-4  py-2 border-3 border-gray-300  focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 font-medium transition-all"
             />
           </div>
           <button
@@ -232,12 +232,12 @@ function Input({
               (!isBodyValid && mode === "raw") ||
               ((mode === "form" || mode === "urlencoded") && !isFormValid)
             }
-            className={`px-4 py-4 rounded-full flex items-center gap-2 transition-all ${
+            className={`px-4 py-3  flex items-center gap-2 transition-all ${
               loading ||
               (!isBodyValid && mode === "raw") ||
               ((mode === "form" || mode === "urlencoded") && !isFormValid)
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500 text-white shadow-md hover:shadow-lg"
+                : "border-3 border-blue-600  text-blue-600 shadow-md hover:shadow-lg"
             }`}
           >
             {loading ? (
@@ -253,10 +253,10 @@ function Input({
           <button
             onClick={openSaveModal}
             disabled={loading || isAlreadySaved}
-            className={`px-4 py-4 rounded-full flex items-center gap-2 transition-all ${
+            className={`px-4 py-3  flex items-center gap-2 transition-all ${
               loading || isAlreadySaved
                 ? "bg-gray-400 text-white cursor-not-allowed"
-                : "bg-gradient-to-r from-green-500 to-teal-600 hover:from-teal-600 hover:to-green-500 text-white shadow-md hover:shadow-lg"
+                : "border-3 border-green-600  text-green-600 shadow-md hover:shadow-lg"
             }`}
           >
             <Save className="w-4 h-4" />
@@ -298,11 +298,11 @@ function Input({
           method === "PATCH" ||
           method === "PUT") && (
           <div className="flex flex-col gap-4">
-            <div className="inline-flex bg-gray-100 p-1 rounded-lg border border-gray-200">
+            <div className="inline-flex  ">
               <button
-                className={`px-6 py-2 rounded-md transition-all ${
+                className={`px-6 py-2 transition-all ${
                   mode === "raw"
-                    ? "bg-blue-600 shadow-sm text-white"
+                    ? "border-3 border-blue-600 shadow-sm text-blue-600"
                     : "text-gray-500 hover:bg-gray-50"
                 }`}
                 onClick={() => setMode("raw")}
@@ -310,9 +310,9 @@ function Input({
                 Raw JSON
               </button>
               <button
-                className={`px-6 py-2 rounded-md transition-all ${
+                className={`px-6 py-2 transition-all ${
                   mode === "form"
-                    ? "bg-blue-600 shadow-sm text-white"
+                    ? "border-3 border-blue-600 shadow-sm text-blue-600"
                     : "text-gray-500 hover:bg-gray-50"
                 }`}
                 onClick={() => setMode("form")}
@@ -320,9 +320,9 @@ function Input({
                 Form Data
               </button>
               <button
-                className={`px-6 py-2 rounded-md transition-all ${
+                className={`px-6 py-2 transition-all ${
                   mode === "urlencoded"
-                    ? "bg-blue-600 shadow-sm text-white"
+                    ? "border-3 border-blue-600 shadow-sm text-blue-600"
                     : "text-gray-500 hover:bg-gray-50"
                 }`}
                 onClick={() => setMode("urlencoded")}
@@ -336,7 +336,7 @@ function Input({
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
                   placeholder='{ "key": "value" }'
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none font-mono transition-all min-h-[200px] ${
+                  className={`w-full px-4 py-3 border-3  focus:outline-none font-mono transition-all min-h-[200px] ${
                     isBodyValid
                       ? "border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
                       : "border-red-300 focus:border-red-500 focus:ring-1 focus:ring-red-200"
@@ -366,7 +366,7 @@ function Input({
                         onChange={(e) =>
                           handleFormChange(field.id, "name", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-blue-500"
                       />
                     </div>
                     {/* Type Dropdown */}
@@ -376,7 +376,7 @@ function Input({
                         onChange={(e) =>
                           handleFormChange(field.id, "type", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-blue-500"
                       >
                         <option value="text">Text</option>
                         <option value="file">File</option>
@@ -388,7 +388,7 @@ function Input({
                         <input
                           type="file"
                           onChange={(e) => handleFileChange(field.id, e)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                          className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:border-blue-500"
                         />
                       ) : (
                         <input
@@ -398,7 +398,7 @@ function Input({
                           onChange={(e) =>
                             handleFormChange(field.id, "value", e.target.value)
                           }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                          className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:border-blue-500"
                         />
                       )}
                     </div>
@@ -406,7 +406,7 @@ function Input({
                     <div className="col-span-2 flex justify-center">
                       <button
                         onClick={() => removeFormField(field.id)}
-                        className="text-red-500"
+                        className="text-red-400  border px-3 py-2 flex"
                       >
                         <Trash />
                       </button>
