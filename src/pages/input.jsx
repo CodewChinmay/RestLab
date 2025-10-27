@@ -336,7 +336,7 @@ function Input({
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
                   placeholder='{ "key": "value" }'
-                  className={`w-full px-4 py-3 border-3  focus:outline-none font-mono transition-all min-h-[200px] ${
+                  className={`w-full px-4 py-3 border-3 dark:border-gray-700 focus:outline-none font-mono transition-all min-h-[200px] ${
                     isBodyValid
                       ? "border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
                       : "border-red-300 focus:border-red-500 focus:ring-1 focus:ring-red-200"
@@ -366,7 +366,7 @@ function Input({
                         onChange={(e) =>
                           handleFormChange(field.id, "name", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border-3 border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-500"
                       />
                     </div>
                     {/* Type Dropdown */}
@@ -376,7 +376,7 @@ function Input({
                         onChange={(e) =>
                           handleFormChange(field.id, "type", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border-3 border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-500"
                       >
                         <option value="text">Text</option>
                         <option value="file">File</option>
@@ -388,7 +388,7 @@ function Input({
                         <input
                           type="file"
                           onChange={(e) => handleFileChange(field.id, e)}
-                          className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:border-blue-500"
+                          className="w-full px-3 py-2 border-3 border-gray-300 dark:border-gray-700  focus:outline-none focus:border-blue-500"
                         />
                       ) : (
                         <input
@@ -398,7 +398,7 @@ function Input({
                           onChange={(e) =>
                             handleFormChange(field.id, "value", e.target.value)
                           }
-                          className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:border-blue-500"
+                          className="w-full px-3 py-2 border-3 border-gray-300 dark:border-gray-700  focus:outline-none focus:border-blue-500"
                         />
                       )}
                     </div>
@@ -437,7 +437,7 @@ function Input({
                         onChange={(e) =>
                           handleFormChange(field.id, "name", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border-3 border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-500"
                       />
                     </div>
                     {/* Value Input */}
@@ -449,14 +449,14 @@ function Input({
                         onChange={(e) =>
                           handleFormChange(field.id, "value", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2  border-3 border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-500"
                       />
                     </div>
                     {/* Remove Button */}
                     <div className="col-span-2 flex justify-center">
                       <button
                         onClick={() => removeFormField(field.id)}
-                        className="text-red-500"
+                        className="text-red-400  border px-3 py-2 flex"
                       >
                         <Trash />
                       </button>
