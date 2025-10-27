@@ -17,11 +17,11 @@ export default function MethodDropdown({ method, setMethod, methodColors }) {
       </div>
 
       {isOpen && (
-        <div className="absolute top-14 left-0 bg-white shadow-xl rounded-lg border border-gray-200 overflow-hidden w-36 z-10 animate-fade-in">
+        <div className="absolute top-14 left-0 bg-white dark:bg-gray-900 shadow-xl  border-2 border-gray-200 dark:border-gray-700 overflow-hidden w-36 z-10 animate-fade-in">
           {Object.keys(methodColors).map((m) => (
             <div
               key={m}
-              className={`px-4 py-3 cursor-pointer hover:bg-gray-50 transition ${method === m ? "bg-gray-50" : ""}`}
+              className={`px-4 py-3 cursor-pointer hover:bg-gray-800 transition ${method === m ? "bg-gray-50 dark:bg-gray-700" : ""}`}
               onClick={() => {
                 setMethod(m);
                 setIsOpen(false);

@@ -15,11 +15,11 @@ import MethodDropdown from "./methoddropdown.jsx";
 import "../App.css";
 
 const methodColors = {
-  GET: "border-3 border-blue-500 bg-blue-50 text-blue-700",
-  POST: "border-3 border-green-500 bg-green-50 text-green-700",
-  PUT: "border-3 border-yellow-500 bg-yellow-50 text-yellow-700",
-  PATCH: "border-3 border-purple-500 bg-purple-50 text-purple-700",
-  DELETE: "border-3 border-red-500 bg-red-50 text-red-700",
+  GET: "border-3 border-blue-500 bg-blue-50  text-blue-700 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-400" ,
+  POST: "border-3 border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-200 dark:border-green-400",
+  PUT: "border-3 border-yellow-500 bg-yellow-50 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200 dark:border-yellow-400",
+  PATCH: "border-3 border-purple-500 bg-purple-50 text-purple-700 dark:bg-purple-900 dark:text-purple-200 dark:border-purple-400",
+  DELETE: "border-3 border-red-500 bg-red-50 text-red-700 dark:bg-red-900 dark:text-red-200 dark:border-red-400",
 };
 
 function Input({
@@ -206,7 +206,7 @@ function Input({
         </div>
       )}
 
-      <div className="flex flex-col gap-6 bg-white  dark:bg-gray-600 dark:text-white p-6 border-b-3 border-t-3 border-gray-300 dark:border-gray-300">
+      <div className="flex flex-col gap-6 bg-white  dark:bg-gray-900 dark:text-white p-6 border-b-3 border-t-3 border-gray-300 dark:border-gray-700">
         <div className="flex gap-3 items-start relative">
           <MethodDropdown
             method={method}
@@ -222,7 +222,7 @@ function Input({
               placeholder="Enter request URL"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="w-full pl-12 pr-4  py-2 border-3 border-gray-300  focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 font-medium transition-all"
+              className="w-full pl-12 pr-4  py-2 border-3 border-gray-300 dark:border-gray-700 focus:outline-none  font-medium transition-all"
             />
           </div>
           <button
@@ -237,7 +237,7 @@ function Input({
               (!isBodyValid && mode === "raw") ||
               ((mode === "form" || mode === "urlencoded") && !isFormValid)
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "border-3 border-blue-600  text-blue-600 shadow-md hover:shadow-lg"
+                : "border-3 border-blue-600  text-blue-600 shadow-md hover:shadow-lg dark:bg-blue-900 dark:text-blue-200 dark:border-blue-400"
             }`}
           >
             {loading ? (
@@ -256,7 +256,7 @@ function Input({
             className={`px-4 py-3  flex items-center gap-2 transition-all ${
               loading || isAlreadySaved
                 ? "bg-gray-400 text-white cursor-not-allowed"
-                : "border-3 border-green-600  text-green-600 shadow-md hover:shadow-lg"
+                : "border-3 border-green-600  text-green-600 shadow-md hover:shadow-lg dark:bg-green-900 dark:text-green-200 dark:border-green-400"
             }`}
           >
             <Save className="w-4 h-4" />
@@ -289,7 +289,7 @@ function Input({
               placeholder="Enter your token here"
               value={authToken}
               onChange={(e) => setAuthToken(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 font-medium transition-all"
+              className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700  focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 font-medium transition-all"
             />
           )}
         </div>
@@ -302,8 +302,8 @@ function Input({
               <button
                 className={`px-6 py-2 transition-all ${
                   mode === "raw"
-                    ? "border-3 border-blue-600 shadow-sm text-blue-600"
-                    : "text-gray-500 hover:bg-gray-50"
+                    ? "border-3 border-blue-600 shadow-sm text-blue-600 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-400"
+                    : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 "
                 }`}
                 onClick={() => setMode("raw")}
               >
@@ -312,8 +312,8 @@ function Input({
               <button
                 className={`px-6 py-2 transition-all ${
                   mode === "form"
-                    ? "border-3 border-blue-600 shadow-sm text-blue-600"
-                    : "text-gray-500 hover:bg-gray-50"
+                    ? "border-3 border-blue-600 shadow-sm text-blue-600 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-400"
+                    : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
                 }`}
                 onClick={() => setMode("form")}
               >
@@ -322,8 +322,8 @@ function Input({
               <button
                 className={`px-6 py-2 transition-all ${
                   mode === "urlencoded"
-                    ? "border-3 border-blue-600 shadow-sm text-blue-600"
-                    : "text-gray-500 hover:bg-gray-50"
+                    ? "border-3 border-blue-600 shadow-sm text-blue-600 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-400"
+                    : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
                 }`}
                 onClick={() => setMode("urlencoded")}
               >

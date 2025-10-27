@@ -93,7 +93,7 @@ function Header({ onSelectSavedOption }) {
   return (
     <>
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white dark:bg-gray-600 transition-colors duration-300">
+      <header className="sticky top-0 z-40 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div className="container p-2 flex items-center justify-between">
           {/* Left */}
           <div className="flex items-center">
@@ -122,7 +122,7 @@ function Header({ onSelectSavedOption }) {
           </button>
         </div>
 
-        <div className="absolute h-0.5 w-full bg-gray-300 dark:bg-gray-300"></div>
+        <div className="absolute h-0.5 w-full bg-gray-300 dark:bg-gray-700"></div>
       </header>
 
       {/* Sidebar */}

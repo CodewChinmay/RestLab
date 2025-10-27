@@ -176,15 +176,15 @@ function App() {
       {/* Pass the saved option selection callback to Header */}
       <Header onSelectSavedOption={handleSelectSavedOption} />
       {/* Tab Navigation */}
-      <div className="flex items-center dark:bg-gray-600">
+      <div className="flex items-center dark:bg-gray-900">
         {forms.map((form, idx) => (
           <div
             key={form.id}
             onClick={() => setActiveIndex(idx)}
-            className={`flex items-center px-3 py-1 pt-3 pb-3 border-r-3 border-gray-300 cursor-pointer ${
+            className={`flex items-center px-3 py-1 pt-3 pb-3 border-r-3 border-gray-300 dark:border-gray-700 cursor-pointer ${
               idx === activeIndex
                 ? "bg-gray-200 dark:bg-gray-800 dark:text-white text-gray-900  "
-                : "bg-gray-100 text-gray-700 dark:bg-gray-600 dark:text-white"
+                : "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-white"
             }`}
           >
             <span className="flex  items-center gap-2">
@@ -219,7 +219,7 @@ function App() {
         ))}
         <button
           onClick={addForm}
-          className="flex items-center justify-center h-12 w-11 bg-gray-100 border-r-3 border-gray-300 hover:bg-gray-20 text-gray-900  dark:bg-gray-600 dark:text-white"
+          className="flex items-center justify-center h-12 w-11 bg-gray-100 border-r-3 border-gray-300 dark:border-gray-700 hover:bg-gray-20 text-gray-900  dark:bg-gray-900 dark:text-white"
         >
           <Plus className="w-4 h-4 " />
           {/* <span>Add Page</span> */}
